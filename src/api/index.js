@@ -18,10 +18,10 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 // REFERENCE PRODUCTS
-const productsCollectionRef = firebase.firestore().collection("products");
+const productsCollectionRef = firebase.firestore().enablePersistence().collection("products");
 const productsDocRef = productsCollectionRef.doc("json");
 const allProductsCollectionRef = productsDocRef.collection("allProducts");
-const allOrdersCollectionRef = firebase.firestore().collection("allOrders");
+const allOrdersCollectionRef = firebase.firestore().enablePersistence().collection("allOrders");
 
 //REFERENCE AUTH
 const auth = firebase.auth();
