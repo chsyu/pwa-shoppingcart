@@ -48,10 +48,26 @@ registerRoute(
 
 // An example runtime caching route for requests that aren't handled by the
 // precache, in this case same-origin .png requests like those from in public/
+// registerRoute(
+//   new RegExp(".(png|svg|jpg|jpeg|ico)$"),
+//   new CacheFirst({
+//     cacheName: "cache-images",
+//     plugins: [
+//       new ExpirationPlugin({
+//         maxAgeSeconds: 60 * 60,
+//         maxEntries: 50,
+//         purgeOnQuotaError: true,
+//       }),
+//     ],
+//   })
+// );
+
+
 registerRoute(
-  new RegExp(".(png|svg|jpg|jpeg|ico)$"),
-  new CacheFirst({
-    cacheName: "cache-images",
+  ({request}) => request.destination === 'script' ||
+                 request.destination === 'style',
+  new StaleWhileRevalidate({
+    cacheName: "script-styleAPI",
     plugins: [
       new ExpirationPlugin({
         maxAgeSeconds: 60 * 60,
@@ -63,18 +79,34 @@ registerRoute(
 );
 
 registerRoute(
-  new RegExp("https://www.nordicnest.com"),
-  new StaleWhileRevalidate({
-    cacheName: "cache-imagesAPI",
+  ({request}) => request.destination === 'image',
+  new CacheFirst({
+    cacheName: 'images',
     plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
       new ExpirationPlugin({
-        maxAgeSeconds: 60 * 60,
-        maxEntries: 50,
-        purgeOnQuotaError: true,
+        maxEntries: 60,
+        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
       }),
     ],
-  })
+  }),
 );
+
+// registerRoute(
+//   new RegExp("https://www.nordicnest.com"),
+//   new StaleWhileRevalidate({
+//     cacheName: "cache-imagesAPI",
+//     plugins: [
+//       new ExpirationPlugin({
+//         maxAgeSeconds: 60 * 60,
+//         maxEntries: 50,
+//         purgeOnQuotaError: true,
+//       }),
+//     ],
+//   })
+// );
 
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
