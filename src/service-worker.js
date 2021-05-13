@@ -79,7 +79,7 @@ registerRoute(
 );
 
 registerRoute(
-  ({request}) => request.destination === 'image',
+  ({request}) => request.destination === 'images',
   new CacheFirst({
     cacheName: 'images',
     plugins: [
@@ -95,8 +95,7 @@ registerRoute(
 );
 
 registerRoute(
-  // new RegExp("https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel"),
-  new RegExp("https://216.58.200.42:443"),
+  new RegExp("https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel"),
   new StaleWhileRevalidate({
     cacheName: "cache-FireStoreAPI",
     plugins: [
