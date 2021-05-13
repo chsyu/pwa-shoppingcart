@@ -95,7 +95,8 @@ registerRoute(
 );
 
 registerRoute(
-  new RegExp("https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel"),
+  // new RegExp("https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel"),
+  new RegExp("https://216.58.200.42:443"),
   new StaleWhileRevalidate({
     cacheName: "cache-FireStoreAPI",
     plugins: [
