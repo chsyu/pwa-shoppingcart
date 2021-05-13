@@ -94,19 +94,20 @@ registerRoute(
   }),
 );
 
-// registerRoute(
-//   new RegExp("https://www.nordicnest.com"),
-//   new StaleWhileRevalidate({
-//     cacheName: "cache-imagesAPI",
-//     plugins: [
-//       new ExpirationPlugin({
-//         maxAgeSeconds: 60 * 60,
-//         maxEntries: 50,
-//         purgeOnQuotaError: true,
-//       }),
-//     ],
-//   })
-// );
+registerRoute(
+  new RegExp("https://firestore.googleapis.com/google.firestore.v1.Firestore"),
+  new StaleWhileRevalidate({
+    cacheName: "cache-FireStoreAPI",
+    plugins: [
+      new ExpirationPlugin({
+        maxAgeSeconds: 60 * 60,
+        maxEntries: 50,
+        purgeOnQuotaError: true,
+      }),
+    ],
+  })
+);
+
 
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
