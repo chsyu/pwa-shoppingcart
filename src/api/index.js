@@ -21,7 +21,8 @@ firebase.initializeApp(firebaseConfig);
 firebase.firestore().settings({
   cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED
 });
-const store = firebase.firestore().enablePersistence();
+const store = firebase.firestore();
+store.enablePersistence();
 
 // REFERENCE PRODUCTS
 const productsCollectionRef = store.collection("products");
