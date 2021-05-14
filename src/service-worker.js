@@ -95,18 +95,18 @@ registerRoute(
 );
 
 registerRoute(
-  new RegExp("https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel"),
-  new StaleWhileRevalidate({
-    cacheName: "cache-FireStoreAPI",
-    plugins: [
-      new ExpirationPlugin({
-        maxAgeSeconds: 60 * 60,
-        maxEntries: 50,
-        purgeOnQuotaError: true,
-      }),
-    ],
-  })
-);
+//   new RegExp("https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel"),
+//   new StaleWhileRevalidate({
+//     cacheName: "cache-FireStoreAPI",
+//     plugins: [
+//       new ExpirationPlugin({
+//         maxAgeSeconds: 60 * 60,
+//         maxEntries: 50,
+//         purgeOnQuotaError: true,
+//       }),
+//     ],
+//   })
+// );
 
 
 // This allows the web app to trigger skipWaiting via

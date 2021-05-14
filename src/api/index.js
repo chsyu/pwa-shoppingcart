@@ -21,13 +21,13 @@ firebase.initializeApp(firebaseConfig);
 firebase.firestore().settings({
   cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED
 });
-firebase.firestore().enablePersistence();
+const store = firebase.firestore().enablePersistence();
 
 // REFERENCE PRODUCTS
-const productsCollectionRef = firebase.firestore().collection("products");
+const productsCollectionRef = store.collection("products");
 const productsDocRef = productsCollectionRef.doc("json");
 const allProductsCollectionRef = productsDocRef.collection("allProducts");
-const allOrdersCollectionRef = firebase.firestore().collection("allOrders");
+const allOrdersCollectionRef = store.collection("allOrders");
 
 //REFERENCE AUTH
 const auth = firebase.auth();
