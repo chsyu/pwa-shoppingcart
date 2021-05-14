@@ -11,7 +11,7 @@ import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
-import { StaleWhileRevalidate, CacheFirst } from 'workbox-strategies';
+import { StaleWhileRevalidate } from 'workbox-strategies';
 
 clientsClaim();
 
@@ -46,81 +46,20 @@ registerRoute(
   createHandlerBoundToURL(process.env.PUBLIC_URL + '/index.html')
 );
 
-
+// An example runtime caching route for requests that aren't handled by the
+// precache, in this case same-origin .png requests like those from in public/
 registerRoute(
-  new RegExp(".(png|svg|jpg|jpeg|ico)$"),
-  new CacheFirst({
-    cacheName: "cache-images",
-    plugins: [
-      new ExpirationPlugin({
-        maxAgeSeconds: 60 * 60,
-        maxEntries: 50,
-        purgeOnQuotaError: true,
-      }),
-    ],
-  })
-);
-
-// registerRoute(
-//   new RegExp(".(json)$"),
-//   new CacheFirst({
-//     cacheName: "cache-json",
-//     plugins: [
-//       new ExpirationPlugin({
-//         maxAgeSeconds: 60 * 60,
-//         maxEntries: 50,
-//         purgeOnQuotaError: true,
-//       }),
-//     ],
-//   })
-// );
-
-
-registerRoute(
-  ({request}) => request.destination === 'script' ||
-                 request.destination === 'style',
+  // Add in any other file extensions or routing criteria as needed.
+  ({ url }) => url.origin === self.location.origin && url.pathname.endsWith('.png'), // Customize this strategy as needed, e.g., by changing to CacheFirst.
   new StaleWhileRevalidate({
-    cacheName: "script-styleAPI",
-    plugins: [
-      new ExpirationPlugin({
-        maxAgeSeconds: 60 * 60,
-        maxEntries: 50,
-        purgeOnQuotaError: true,
-      }),
-    ],
-  })
-);
-
-registerRoute(
-  ({request}) => request.destination === 'images',
-  new CacheFirst({
     cacheName: 'images',
     plugins: [
-      new CacheableResponsePlugin({
-        statuses: [0, 200],
-      }),
-      new ExpirationPlugin({
-        maxEntries: 60,
-        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
-      }),
+      // Ensure that once this runtime cache reaches a maximum size the
+      // least-recently used images are removed.
+      new ExpirationPlugin({ maxEntries: 50 }),
     ],
-  }),
+  })
 );
-
-// registerRoute(
-//   new RegExp("https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel"),
-//   new StaleWhileRevalidate({
-//     cacheName: "cache-FireStoreAPI",
-//     plugins: [
-//       new ExpirationPlugin({
-//         maxAgeSeconds: 60 * 60,
-//         maxEntries: 50,
-//         purgeOnQuotaError: true,
-//       }),
-//     ],
-//   })
-// );
-
 
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})

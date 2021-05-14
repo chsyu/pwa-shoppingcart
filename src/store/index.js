@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { useReducer, createContext } from "react";
 import useReducerWithThunk from "use-reducer-thunk";
 import {
   SET_PAGE_TITLE,
@@ -369,12 +369,12 @@ function reducer(state, action) {
 }
 
 export function StoreProvider(props) {
-  const [state, dispatch] = useReducerWithThunk(
-    reducer,
-    initialState,
-    "example"
-  );
-  // const [state, dispatch] = useReducer(reducer, initialState)
+  // const [state, dispatch] = useReducerWithThunk(
+  //   reducer,
+  //   initialState,
+  //   "example"
+  // );
+  const [state, dispatch] = useReducer(reducer, initialState)
   const value = { state, dispatch };
 
   return (
