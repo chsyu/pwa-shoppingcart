@@ -45,7 +45,7 @@ export default function OrderCard({ orderId }) {
 
    useEffect(() => {
       requestOrderDetail(dispatch, orderId)
-   }, [orderId])
+   }, [orderId]);// eslint-disable-line react-hooks/exhaustive-deps
 
    return (
       <>
