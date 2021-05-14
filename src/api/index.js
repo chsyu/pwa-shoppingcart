@@ -17,11 +17,17 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+// ENABLE DATA PERSISTANCE
+firebase.firestore().settings({
+  cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED
+});
+firebase.firestore().enablePersistence();
+
 // REFERENCE PRODUCTS
-const productsCollectionRef = firebase.firestore().enablePersistence().collection("products");
+const productsCollectionRef = firebase.firestore().collection("products");
 const productsDocRef = productsCollectionRef.doc("json");
 const allProductsCollectionRef = productsDocRef.collection("allProducts");
-const allOrdersCollectionRef = firebase.firestore().enablePersistence().collection("allOrders");
+const allOrdersCollectionRef = firebase.firestore().collection("allOrders");
 
 //REFERENCE AUTH
 const auth = firebase.auth();
