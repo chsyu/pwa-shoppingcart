@@ -12,6 +12,14 @@ import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate, CacheFirst } from 'workbox-strategies';
+import {
+  pageCache,
+  imageCache,
+  staticResourceCache,
+  googleFontsCache,
+  offlineFallback,
+} from 'workbox-recipes';
+
 
 clientsClaim();
 
@@ -50,19 +58,30 @@ registerRoute(
   createHandlerBoundToURL(process.env.PUBLIC_URL + '/index.html')
 );
 
-registerRoute(
-  new RegExp(".(png|svg|jpg|jpeg|ico)$"),
-  new CacheFirst({
-    cacheName: "cache-images",
-    plugins: [
-      new ExpirationPlugin({
-        maxAgeSeconds: 60 * 60,
-        maxEntries: 50,
-        purgeOnQuotaError: true,
-      }),
-    ],
-  })
-);
+// registerRoute(
+//   new RegExp(".(png|svg|jpg|jpeg|ico)$"),
+//   new CacheFirst({
+//     cacheName: "cache-images",
+//     plugins: [
+//       new ExpirationPlugin({
+//         maxAgeSeconds: 60 * 60,
+//         maxEntries: 50,
+//         purgeOnQuotaError: true,
+//       }),
+//     ],
+//   })
+// );
+
+pageCache();
+
+googleFontsCache();
+
+staticResourceCache();
+
+imageCache();
+
+offlineFallback();
+
 
 // An example runtime caching route for requests that aren't handled by the
 // precache, in this case same-origin .png requests like those from in public/
